@@ -1,34 +1,23 @@
-%global oname rtslib
+%global oname rtslib-fb
 
 Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        1.99.1.git644eece
-Release:        8%{?dist}
-# placeholder URL and source entries
-# archive created using:
-# git clone git://risingtidesystems.com/rtslib.git
-# cd rtslib
-# git archive 644eece --prefix rtslib-%{version}/ | gzip -n > rtslib-%{version}.tar.gz
-URL:            http://www.risingtidesystems.com/git/
-Source:         %{oname}-%{version}.tar.gz
-Patch1:         %{name}-git-version.patch
-Patch2:         %{name}-use-ethtool.patch
-Patch3:         %{name}-update-specpath.patch
+Version:        2.1.fb1
+Release:        1%{?dist}
+URL:            https://github.com/agrover/rtslib-fb/
+Source:         https://github.com/agrover/%{oname}/tarball/v%{version}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-ipaddr python-ethtool python-configobj python-devel
 Requires:       python-ipaddr python-ethtool python-configobj
 
 %description
-API for RisingTide Systems generic SCSI target.
+API for generic Linux SCSI kernel target.
 
 %prep
-%setup -q -n %{oname}-%{version}
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%setup -q -n agrover-%{oname}-436f85f
 
 %build
 %{__python} setup.py build
@@ -50,6 +39,14 @@ rm -rf %{buildroot}
 %doc COPYING README
 
 %changelog
+* Tue Dec 6 2011 Andy Grover <agrover@redhat.com> - 2.1.fb1-1
+- Change upstream URL
+- New upstream release
+- Remove upstreamed patches:
+  * python-rtslib-git-version.patch
+  * python-rtslib-use-ethtool.patch
+  * python-rtslib-update-specpath.patch
+
 * Mon Nov 14 2011 Andy Grover <agrover@redhat.com> - 1.99.1.git644eece-8
 - Change archive instructions to use gzip -n
 - Fix issues raised in Fedora package review (#744349)
