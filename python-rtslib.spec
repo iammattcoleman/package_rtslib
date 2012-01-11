@@ -4,7 +4,7 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb2
+Version:        2.1.fb3
 Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/agrover/%{oname}/tarball/v%{version}
@@ -17,7 +17,7 @@ Requires:       python-ipaddr python-ethtool python-configobj
 API for generic Linux SCSI kernel target.
 
 %prep
-%setup -q -n agrover-%{oname}-5841ce4
+%setup -q -n agrover-%{oname}-40f97dd
 
 %build
 %{__python} setup.py build
@@ -39,6 +39,9 @@ rm -rf %{buildroot}
 %doc COPYING README
 
 %changelog
+* Tue Jan 10 2012 Andy Grover <agrover@redhat.com> - 2.1.fb3-1
+- New upstream release
+
 * Tue Dec 6 2011 Andy Grover <agrover@redhat.com> - 2.1.fb2-1
 - New upstream release
 
