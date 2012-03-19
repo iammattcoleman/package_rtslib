@@ -10,7 +10,7 @@ URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/agrover/%{oname}/tarball/v%{version}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-BuildRequires:  python-ipaddr python-ethtool python-configobj python-devel
+BuildRequires:  python-ipaddr python-ethtool python-configobj python-devel epydoc
 Requires:       python-ipaddr python-ethtool python-configobj
 
 %package doc
