@@ -13,14 +13,26 @@ BuildArch:      noarch
 BuildRequires:  python-ipaddr python-ethtool python-configobj python-devel
 Requires:       python-ipaddr python-ethtool python-configobj
 
+%package doc
+Summary:	Documentation for python-rtslib
+Group:		Documentation
+Requires:	%{name} = %{version}-%{release}
+
+
 %description
 API for generic Linux SCSI kernel target.
+
+%description doc
+API documentation for rtslib, to configure the generic Linux SCSI
+kernel target.
 
 %prep
 %setup -q -n agrover-%{oname}-46e1918
 
 %build
 %{__python} setup.py build
+mkdir -p doc/html
+epydoc --no-sourcecode --html -n rtslib -o doc/html rtslib/*.py
 
 %install
 rm -rf %{buildroot}
@@ -38,7 +50,13 @@ rm -rf %{buildroot}
 /var/lib/target
 %doc COPYING README
 
+%files doc
+%doc doc/html
+
 %changelog
+* Wed Feb 29 2012 Andy Grover <agrover@redhat.com> - 2.1.fb12-2
+- Add -doc package of epydoc-generated html docs
+
 * Wed Feb 29 2012 Andy Grover <agrover@redhat.com> - 2.1.fb12-1
 - New upstream release
 
