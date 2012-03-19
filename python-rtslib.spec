@@ -5,7 +5,7 @@ License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
 Version:        2.1.fb12
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/agrover/%{oname}/tarball/v%{version}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
