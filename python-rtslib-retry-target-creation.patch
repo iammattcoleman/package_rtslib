@@ -1,0 +1,50 @@
+commit ff8f663b0f29995d3c01fd68e5388979f9f344d9
+Author: Andy Grover <agrover@redhat.com>
+Date:   Fri May 25 08:04:07 2012 -0700
+
+    retry target creation
+    
+    For bz 815981, fcoe may not be fully initialized before fcoe-target
+    restore, so give them 60 seconds to show up.
+    
+    Signed-off-by: Andy Grover <agrover@redhat.com>
+
+diff --git a/rtslib/target.py b/rtslib/target.py
+index 62d4169..a8a2062 100644
+--- a/rtslib/target.py
++++ b/rtslib/target.py
+@@ -1284,6 +1284,8 @@ class TPG(CFSNode):
+         return d
+ 
+ 
++target_timeout = 60
++
+ class Target(CFSNode):
+     '''
+     This is an interface to Targets in configFS.
+@@ -1377,9 +1379,22 @@ class Target(CFSNode):
+         Returns how many recoverable errors happened.
+         '''
+ 
+-        try:
+-            t_obj = Target(fm_obj, t.get('wwn'))
+-        except RTSLibError:
++        # HACK:  Give FCoE interfaces time to show up
++        # HACK2: Make timeout global so we don't end up waiting
++        #        target_timeout * num_failing_targets
++        global target_timeout
++        per_try = 5
++        t_obj = None
++        while target_timeout > 0:
++            try:
++                t_obj = Target(fm_obj, t.get('wwn'))
++                break
++            except RTSLibError:
++                pass
++            import time
++            time.sleep(per_try)
++            target_timeout -= per_try
++        if not t_obj:
+             return 1
+ 
+         errors = 0
