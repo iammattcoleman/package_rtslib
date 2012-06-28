@@ -4,11 +4,10 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb15
+Version:        2.1.fb17
 Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/downloads/agrover/%{oname}/%{oname}-%{version}.tar.gz
-Patch1:         %{name}-retry-target-creation.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-ipaddr python-ethtool python-configobj python-devel epydoc
@@ -29,7 +28,6 @@ kernel target.
 
 %prep
 %setup -q -n %{oname}-%{version}
-%patch1 -p1
 
 %build
 %{__python} setup.py build
@@ -56,6 +54,11 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Thu Jun 28 2012 Andy Grover <agrover@redhat.com> - 2.1.fb17-1
+- New upstream release
+- Remove patch retry-target-creation.patch, upstream has alternate
+  fix.
+
 * Tue Jun 12 2012 Andy Grover <agrover@redhat.com> - 2.1.fb15-1
 - New upstream release
 
