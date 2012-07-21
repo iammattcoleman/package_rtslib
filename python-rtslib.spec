@@ -5,7 +5,7 @@ License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
 Version:        2.1.fb17
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/downloads/agrover/%{oname}/%{oname}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -54,6 +54,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.fb17-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Thu Jun 28 2012 Andy Grover <agrover@redhat.com> - 2.1.fb17-1
 - New upstream release
 - Remove patch retry-target-creation.patch, upstream has alternate
