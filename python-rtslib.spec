@@ -4,14 +4,14 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb17
-Release:        2%{?dist}
+Version:        2.1.fb18
+Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/downloads/agrover/%{oname}/%{oname}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-BuildRequires:  python-ipaddr python-ethtool python-configobj python-devel epydoc
-Requires:       python-ipaddr python-ethtool python-configobj
+BuildRequires:  python-ipaddr python-ethtool python-devel epydoc
+Requires:       python-ipaddr python-ethtool
 
 %package doc
 Summary:	Documentation for python-rtslib
@@ -54,6 +54,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Tue Jul 31 2012 Andy Grover <agrover@redhat.com> - 2.1.fb18-1
+- New upstream release. Remove configobj dependency
+
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.fb17-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
