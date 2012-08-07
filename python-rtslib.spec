@@ -4,7 +4,7 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb19
+Version:        2.1.fb20
 Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/downloads/agrover/%{oname}/%{oname}-%{version}.tar.gz
@@ -12,11 +12,12 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-ipaddr python-ethtool python-devel epydoc
 Requires:       python-ipaddr python-ethtool python-kmod
+Requires:       kernel >= 3.6.0
 
 %package doc
-Summary:	Documentation for python-rtslib
-Group:		Documentation
-Requires:	%{name} = %{version}-%{release}
+Summary:        Documentation for python-rtslib
+Group:          Documentation
+Requires:       %{name} = %{version}-%{release}
 
 
 %description
@@ -46,7 +47,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{python_sitelib}
+%{python_sitelib}/*
 /var/lib/target
 %doc COPYING README
 
@@ -54,6 +55,10 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Tue Aug 7 2012 Andy Grover <agrover@redhat.com> - 2.1.fb20-1
+- New upstream release. Add kernel version dependency.
+- Don't claim python_sitelib
+
 * Thu Aug 2 2012 Andy Grover <agrover@redhat.com> - 2.1.fb19-1
 - New upstream release. Add kmod dependency.
 
