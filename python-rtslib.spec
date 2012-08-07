@@ -5,9 +5,10 @@ License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
 Version:        2.1.fb20
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/downloads/agrover/%{oname}/%{oname}-%{version}.tar.gz
+Patch0:         %{name}-no-usb.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-ipaddr python-ethtool python-devel epydoc
@@ -29,6 +30,7 @@ kernel target.
 
 %prep
 %setup -q -n %{oname}-%{version}
+%patch0 -p1
 
 %build
 %{__python} setup.py build
@@ -55,6 +57,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Tue Aug 7 2012 Andy Grover <agrover@redhat.com> - 2.1.fb20-2
+- Add patch no-usb.patch
+
 * Tue Aug 7 2012 Andy Grover <agrover@redhat.com> - 2.1.fb20-1
 - New upstream release. Add kernel version dependency.
 - Don't claim python_sitelib
