@@ -4,8 +4,8 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb20
-Release:        2%{?dist}
+Version:        2.1.fb21
+Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 Source:         https://github.com/downloads/agrover/%{oname}/%{oname}-%{version}.tar.gz
 Patch0:         %{name}-no-usb.patch
@@ -57,6 +57,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Wed Aug 8 2012 Andy Grover <agrover@redhat.com> - 2.1.fb21-1
+- New upstream release
+
 * Tue Aug 7 2012 Andy Grover <agrover@redhat.com> - 2.1.fb20-2
 - Add patch no-usb.patch
 
