@@ -4,16 +4,18 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb24
+Version:        2.1.fb26
 Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
-Source:         https://github.com/downloads/agrover/%{oname}/%{oname}-%{version}.tar.gz
+# Acquire with
+# wget --content-disposition https://github.com/agrover/%{oname}/archive/v%{version}.tar.gz
+# and it will save with the name below. Not cool, github.
+Source:         https://github.com/agrover/%{oname}/archive/%{oname}-%{version}.tar.gz
 Patch0:         %{name}-no-usb.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-BuildRequires:  python-ipaddr python-ethtool python-devel epydoc
-Requires:       python-ipaddr python-ethtool python-kmod
-Requires:       kernel >= 3.6.0
+BuildRequires:  python-devel epydoc
+Requires:       python-kmod
 
 %package doc
 Summary:        Documentation for python-rtslib
@@ -57,6 +59,11 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Thu Dec 20 2012 Andy Grover <agrover@redhat.com> - 2.1.fb26-1
+- New upstream release
+- Remove kernel dependency
+- Remove python-ethtool and python-ipaddr dependencies
+
 * Tue Nov 13 2012 Andy Grover <agrover@redhat.com> - 2.1.fb24-1
 - New upstream release
 
