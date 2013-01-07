@@ -4,7 +4,7 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb27
+Version:        2.1.fb28
 Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 # Acquire with
@@ -56,6 +56,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Mon Jan 7 2013 Andy Grover <agrover@redhat.com> - 2.1.fb28-1
+- New upstream version
+
 * Wed Jan 2 2013 Andy Grover <agrover@redhat.com> - 2.1.fb27-1
 - Specfiles removed upstream, remove handling
 - Refresh no-usb.patch
