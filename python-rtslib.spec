@@ -5,7 +5,7 @@ License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for RisingTide Systems generic SCSI target
 Version:        2.1.fb28
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 # Acquire with
 # wget --content-disposition https://github.com/agrover/%{oname}/archive/v%{version}.tar.gz
@@ -56,6 +56,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.fb28-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Mon Jan 7 2013 Andy Grover <agrover@redhat.com> - 2.1.fb28-1
 - New upstream version
 
