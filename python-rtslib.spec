@@ -3,15 +3,14 @@
 Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
-Summary:        API for RisingTide Systems generic SCSI target
-Version:        2.1.fb28
-Release:        2%{?dist}
+Summary:        API for Linux kernel LIO SCSI target
+Version:        2.1.fb30
+Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 # Acquire with
 # wget --content-disposition https://github.com/agrover/%{oname}/archive/v%{version}.tar.gz
 # and it will save with the name below. Not cool, github.
 Source:         https://github.com/agrover/%{oname}/archive/%{oname}-%{version}.tar.gz
-Patch0:         %{name}-no-usb.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc
@@ -28,11 +27,10 @@ API for generic Linux SCSI kernel target.
 
 %description doc
 API documentation for rtslib, to configure the generic Linux SCSI
-kernel target.
+multiprotocol kernel target.
 
 %prep
 %setup -q -n %{oname}-%{version}
-%patch0 -p1
 
 %build
 %{__python} setup.py build
@@ -56,6 +54,11 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Tue Feb 26 2013 Andy Grover <agrover@redhat.com> - 2.1.fb30-1
+- New upstream version
+- Update description and summary
+- Remove patch0, upstream doesn't include usb gadget any more
+
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.fb28-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
