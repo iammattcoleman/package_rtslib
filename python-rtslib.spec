@@ -4,7 +4,7 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb30
+Version:        2.1.fb32
 Release:        1%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 # Acquire with
@@ -54,6 +54,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Tue Apr 9 2013 Andy Grover <agrover@redhat.com> - 2.1.fb32-1
+- New upstream version
+
 * Tue Feb 26 2013 Andy Grover <agrover@redhat.com> - 2.1.fb30-1
 - New upstream version
 - Update description and summary
