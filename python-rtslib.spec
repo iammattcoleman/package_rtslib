@@ -1,3 +1,7 @@
+%if 0%{?fedora}
+%global with_python3 1
+%endif
+
 %global oname rtslib-fb
 
 Name:           python-rtslib
@@ -5,7 +9,7 @@ License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb32
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://github.com/agrover/rtslib-fb/
 # Acquire with
 # wget --content-disposition https://github.com/agrover/%{oname}/archive/v%{version}.tar.gz
@@ -15,6 +19,10 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc
 Requires:       python-kmod
+
+%if 0%{?with_python3}
+BuildRequires:  python3-devel python-tools
+%endif
 
 %package doc
 Summary:        Documentation for python-rtslib
@@ -29,18 +37,44 @@ API for generic Linux SCSI kernel target.
 API documentation for rtslib, to configure the generic Linux SCSI
 multiprotocol kernel target.
 
+%if 0%{?with_python3}
+%package -n python3-rtslib
+Summary:        API for Linux kernel LIO SCSI target
+Group:          System Environment/Libraries
+
+%description -n python3-rtslib
+API for generic Linux SCSI kernel target.
+%endif
+
 %prep
 %setup -q -n %{oname}-%{version}
+
+%if 0%{?with_python3}
+rm -rf %{py3dir}
+cp -a . %{py3dir}
+%endif
 
 %build
 %{__python} setup.py build
 mkdir -p doc/html
 epydoc --no-sourcecode --html -n rtslib -o doc/html rtslib/*.py
 
+%if 0%{?with_python3}
+pushd %{py3dir}
+2to3 --write --nobackups .
+%{__python3} setup.py build
+popd
+%endif
+
 %install
 rm -rf %{buildroot}
 %{__python} setup.py install --skip-build --root %{buildroot}
 
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py install --skip-build --root %{buildroot}
+popd
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -50,10 +84,19 @@ rm -rf %{buildroot}
 %{python_sitelib}/*
 %doc COPYING README
 
+%if 0%{?with_python3}
+%files -n python3-rtslib
+%{python3_sitelib}/*
+%doc COPYING README
+%endif
+
 %files doc
 %doc doc/html
 
 %changelog
+* Tue Apr 16 2013 Andy Grover <agrover@redhat.com> - 2.1.fb32-2
+- Add python3 subpackage
+
 * Tue Apr 9 2013 Andy Grover <agrover@redhat.com> - 2.1.fb32-1
 - New upstream version
 
