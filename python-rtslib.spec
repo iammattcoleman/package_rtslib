@@ -8,13 +8,10 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb32
-Release:        2%{?dist}
-URL:            https://github.com/agrover/rtslib-fb/
-# Acquire with
-# wget --content-disposition https://github.com/agrover/%{oname}/archive/v%{version}.tar.gz
-# and it will save with the name below. Not cool, github.
-Source:         https://github.com/agrover/%{oname}/archive/%{oname}-%{version}.tar.gz
+Version:        2.1.fb33
+Release:        1%{?dist}
+URL:            https://fedorahosted.org/targetcli-fb/
+Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc
@@ -82,18 +79,22 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
-%doc COPYING README
+%doc COPYING README.md
 
 %if 0%{?with_python3}
 %files -n python3-rtslib
 %{python3_sitelib}/*
-%doc COPYING README
+%doc COPYING README.md
 %endif
 
 %files doc
 %doc doc/html
 
 %changelog
+* Thu May 2 2013 Andy Grover <agrover@redhat.com> - 2.1.fb33-1
+- New upstream version
+- Update source file location
+
 * Tue Apr 16 2013 Andy Grover <agrover@redhat.com> - 2.1.fb32-2
 - Add python3 subpackage
 
