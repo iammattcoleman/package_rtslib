@@ -8,7 +8,7 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb34
+Version:        2.1.fb35
 Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
@@ -91,6 +91,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Fri Jun 7 2013 Andy Grover <agrover@redhat.com> - 2.1.fb35-1
+- New upstream version
+
 * Thu May 9 2013 Andy Grover <agrover@redhat.com> - 2.1.fb34-1
 - New upstream version
 
