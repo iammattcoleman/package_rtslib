@@ -12,6 +12,7 @@ Version:        2.1.fb35
 Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
+Patch0:         %{name}-fix-tabs.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc
@@ -45,6 +46,7 @@ API for generic Linux SCSI kernel target.
 
 %prep
 %setup -q -n %{oname}-%{version}
+%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -93,6 +95,7 @@ rm -rf %{buildroot}
 %changelog
 * Fri Jun 7 2013 Andy Grover <agrover@redhat.com> - 2.1.fb35-1
 - New upstream version
+- add fix-tabs.patch
 
 * Thu May 9 2013 Andy Grover <agrover@redhat.com> - 2.1.fb34-1
 - New upstream version

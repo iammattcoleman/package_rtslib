@@ -1,0 +1,32 @@
+commit 44223d7bd966164387fbaaade7da58fad617f427
+Author: Andy Grover <agrover@redhat.com>
+Date:   Fri Jun 7 15:31:34 2013 -0700
+
+    tabs -> spaces
+    
+    Signed-off-by: Andy Grover <agrover@redhat.com>
+
+diff --git a/rtslib/tcm.py b/rtslib/tcm.py
+index 4152a98..32d53ee 100644
+--- a/rtslib/tcm.py
++++ b/rtslib/tcm.py
+@@ -83,8 +83,8 @@ class StorageObject(CFSNode):
+         if not lines[0].startswith("PR_REG_START:"):
+             return
+ 
+-	reservations = []
+-	for line in lines:
++        reservations = []
++        for line in lines:
+             if line.startswith("PR_REG_START:"):
+                 res_list = []
+             elif line.startswith("PR_REG_END:"):
+@@ -92,7 +92,7 @@ class StorageObject(CFSNode):
+             else:
+                 res_list.append(line.strip())
+ 
+-	for res in reservations:
++        for res in reservations:
+             fwrite(self.path + "/pr/res_aptpl_metadata", ",".join(res))
+ 
+     @classmethod
