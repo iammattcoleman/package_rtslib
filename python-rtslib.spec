@@ -8,11 +8,10 @@ Name:           python-rtslib
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb35
+Version:        2.1.fb36
 Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
-Patch0:         %{name}-fix-tabs.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc
@@ -46,7 +45,6 @@ API for generic Linux SCSI kernel target.
 
 %prep
 %setup -q -n %{oname}-%{version}
-%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -93,6 +91,10 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Tue Jul 2 2013 Andy Grover <agrover@redhat.com> - 2.1.fb36-1
+- New upstream version
+- Remove fix-tabs.patch
+
 * Fri Jun 7 2013 Andy Grover <agrover@redhat.com> - 2.1.fb35-1
 - New upstream version
 - add fix-tabs.patch
