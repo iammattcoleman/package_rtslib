@@ -5,10 +5,10 @@
 %global oname rtslib-fb
 
 Name:           python-rtslib
-License:        AGPLv3
+License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb36
+Version:        2.1.fb37
 Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
@@ -91,6 +91,10 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Tue Jul 23 2013 Andy Grover <agrover@redhat.com> - 2.1.fb37-1
+- New upstream version
+- License now Apache 2.0
+
 * Tue Jul 2 2013 Andy Grover <agrover@redhat.com> - 2.1.fb36-1
 - New upstream version
 - Remove fix-tabs.patch
