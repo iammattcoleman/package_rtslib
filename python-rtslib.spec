@@ -8,7 +8,7 @@ Name:           python-rtslib
 License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb39
+Version:        2.1.fb40
 Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
@@ -91,6 +91,9 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Mon Sep 23 2013 Andy Grover <agrover@redhat.com> - 2.1.fb40-1
+- New upstream version, fixes restore of mappedluns
+
 * Wed Sep 11 2013 Andy Grover <agrover@redhat.com> - 2.1.fb39-1
 - New upstream version, fixes fcoe
 
