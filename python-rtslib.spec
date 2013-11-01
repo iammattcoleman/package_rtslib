@@ -8,17 +8,18 @@ Name:           python-rtslib
 License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb40
+Version:        2.1.fb41
 Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source1:        target.service
+Patch0:         rtslib-fix-setup.patch
 BuildArch:      noarch
-BuildRequires:  python-devel epydoc
+BuildRequires:  python-devel epydoc python-setuptools
 Requires:       python-kmod
 
 %if 0%{?with_python3}
-BuildRequires:  python3-devel python-tools
+BuildRequires:  python3-devel python-tools python3-setuptools
 %endif
 
 %package doc
@@ -28,7 +29,8 @@ Requires:       %{name} = %{version}-%{release}
 
 
 %description
-API for generic Linux SCSI kernel target.
+API for generic Linux SCSI kernel target. Includes the 'target'
+service and targetctl tool for restoring configuration.
 
 %description doc
 API documentation for rtslib, to configure the generic Linux SCSI
@@ -45,6 +47,7 @@ API for generic Linux SCSI kernel target.
 
 %prep
 %setup -q -n %{oname}-%{version}
+%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -53,6 +56,8 @@ cp -a . %{py3dir}
 
 %build
 %{__python} setup.py build
+gzip --stdout doc/targetctl.8 > doc/targetctl.8.gz
+gzip --stdout doc/saveconfig.json.5 > doc/saveconfig.json.5.gz
 mkdir -p doc/html
 epydoc --no-sourcecode --html -n rtslib -o doc/html rtslib/*.py
 
@@ -64,8 +69,13 @@ popd
 %endif
 
 %install
-rm -rf %{buildroot}
 %{__python} setup.py install --skip-build --root %{buildroot}
+mkdir -p %{buildroot}%{_mandir}/man8/
+mkdir -p %{buildroot}%{_mandir}/man5/
+mkdir -p %{buildroot}%{_unitdir}
+install -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/target.service
+install -m 644 doc/targetctl.8.gz %{buildroot}%{_mandir}/man8/
+install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 
 %if 0%{?with_python3}
 pushd %{py3dir}
@@ -73,13 +83,22 @@ pushd %{py3dir}
 popd
 %endif
 
-%clean
-rm -rf %{buildroot}
+%post
+%systemd_post target.service
+
+%preun
+%systemd_preun target.service
+
+%postun
+%systemd_postun_with_restart target.service
 
 %files
-%defattr(-,root,root,-)
 %{python_sitelib}/*
+%{_bindir}/targetctl
+%{_unitdir}/target.service
 %doc COPYING README.md
+%{_mandir}/man8/targetctl.8.gz
+%{_mandir}/man5/saveconfig.json.5.gz
 
 %if 0%{?with_python3}
 %files -n python3-rtslib
@@ -91,6 +110,11 @@ rm -rf %{buildroot}
 %doc doc/html
 
 %changelog
+* Fri Nov 1 2013 Andy Grover <agrover@redhat.com> - 2.1.fb41-1
+- New upstream version
+- Remove obsolete spec stuff: clean, buildroot
+- Add target.service
+
 * Mon Sep 23 2013 Andy Grover <agrover@redhat.com> - 2.1.fb40-1
 - New upstream version, fixes restore of mappedluns
 
@@ -201,7 +225,7 @@ rm -rf %{buildroot}
 * Tue Feb 21 2012 Andy Grover <agrover@redhat.com> - 2.1.fb11-1
 - New upstream release
 
-* Fri Feb 8 2012 Andy Grover <agrover@redhat.com> - 2.1.fb9-1
+* Fri Feb 10 2012 Andy Grover <agrover@redhat.com> - 2.1.fb9-1
 - New upstream release
 
 * Fri Feb 3 2012 Andy Grover <agrover@redhat.com> - 2.1.fb8-1
