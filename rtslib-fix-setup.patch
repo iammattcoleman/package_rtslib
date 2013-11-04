@@ -1,11 +1,38 @@
-commit ba663530889f12834216d813aee128865bdf8fea
-Author: Andy Grover <agrover@redhat.com>
-Date:   Fri Nov 1 12:15:17 2013 -0700
-
-    Update setup.py for targetctl script
-    
-    Signed-off-by: Andy Grover <agrover@redhat.com>
-
+diff --git a/rtslib/root.py b/rtslib/root.py
+index 246c285..d558445 100644
+--- a/rtslib/root.py
++++ b/rtslib/root.py
+@@ -70,6 +70,7 @@ class RTSRoot(CFSNode):
+         base kernel modules (tcm)
+         '''
+         super(RTSRoot, self).__init__()
++        modprobe('configfs')
+         mount_configfs()
+         modprobe('target_core_mod')
+         self._create_in_cfs_ine('any')
+@@ -247,7 +248,7 @@ class RTSRoot(CFSNode):
+         if not restore_file:
+             restore_file = default_save_file
+ 
+-        with open(from_file, "r") as f:
++        with open(restore_file, "r") as f:
+             config = json.loads(f.read())
+             return self.restore(config, clear_existing=True,
+                                 abort_on_error=abort_on_error)
+diff --git a/scripts/targetctl b/scripts/targetctl
+index db8e0d2..bdf59f4 100755
+--- a/scripts/targetctl
++++ b/scripts/targetctl
+@@ -42,8 +42,7 @@ def save(to_file):
+     RTSRoot().save_to_file(save_file=to_file)
+ 
+ def restore(from_file):
+-        errors = RTSRoot().restore_from_file(restore_file=from_file,
+-                                             clear_existing=True)
++        errors = RTSRoot().restore_from_file(restore_file=from_file)
+ 
+         if errors:
+             print("Restore failed, %d errors:" % len(errors), file=err)
 diff --git a/setup.py b/setup.py
 index 7f41d52..5886fbc 100755
 --- a/setup.py

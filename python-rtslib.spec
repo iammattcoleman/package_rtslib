@@ -9,14 +9,17 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb41
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
 Patch0:         rtslib-fix-setup.patch
 BuildArch:      noarch
-BuildRequires:  python-devel epydoc python-setuptools
+BuildRequires:  python-devel epydoc python-setuptools systemd-units
 Requires:       python-kmod
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
 
 %if 0%{?with_python3}
 BuildRequires:  python3-devel python-tools python3-setuptools
@@ -110,6 +113,10 @@ popd
 %doc doc/html
 
 %changelog
+* Mon Nov 4 2013 Andy Grover <agrover@redhat.com> - 2.1.fb41-2
+- Update rtslib-fix-setup.patch with backported fixups
+- Add in missing systemd requires
+
 * Fri Nov 1 2013 Andy Grover <agrover@redhat.com> - 2.1.fb41-1
 - New upstream version
 - Remove obsolete spec stuff: clean, buildroot
