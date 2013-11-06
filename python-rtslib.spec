@@ -9,7 +9,7 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb41
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
@@ -82,7 +82,10 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 
 %if 0%{?with_python3}
 pushd %{py3dir}
-%{__python3} setup.py install --skip-build --root %{buildroot}
+# We don't want py3-converted scripts overwriting py2 scripts
+# Shunt them elsewhere then delete
+%{__python3} setup.py install --skip-build --root %{buildroot} --install-scripts py3scripts
+rm -rf %{buildroot}/py3scripts
 popd
 %endif
 
@@ -113,6 +116,9 @@ popd
 %doc doc/html
 
 %changelog
+* Wed Nov 6 2013 Andy Grover <agrover@redhat.com> - 2.1.fb41-3
+- Don't overwrite py2 scripts with py3 scripts
+
 * Mon Nov 4 2013 Andy Grover <agrover@redhat.com> - 2.1.fb41-2
 - Update rtslib-fix-setup.patch with backported fixups
 - Add in missing systemd requires
