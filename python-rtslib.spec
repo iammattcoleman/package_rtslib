@@ -8,12 +8,11 @@ Name:           python-rtslib
 License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb41
-Release:        3%{?dist}
+Version:        2.1.fb43
+Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
-Patch0:         rtslib-fix-setup.patch
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc python-setuptools systemd-units
 Requires:       python-kmod
@@ -50,7 +49,6 @@ API for generic Linux SCSI kernel target.
 
 %prep
 %setup -q -n %{oname}-%{version}
-%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -116,6 +114,10 @@ popd
 %doc doc/html
 
 %changelog
+* Wed Dec 4 2013 Andy Grover <agrover@redhat.com> - 2.1.fb43-1
+- New upstream version
+- Remove rtslib-fix-setup.patch
+
 * Wed Nov 6 2013 Andy Grover <agrover@redhat.com> - 2.1.fb41-3
 - Don't overwrite py2 scripts with py3 scripts
 
