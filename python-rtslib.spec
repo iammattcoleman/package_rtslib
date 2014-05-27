@@ -9,7 +9,7 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb47
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
@@ -114,6 +114,9 @@ popd
 %doc doc/html
 
 %changelog
+* Wed May 28 2014 Kalev Lember <kalevlember@gmail.com> - 2.1.fb47-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+
 * Fri Mar 14 2014 Andy Grover <agrover@redhat.com> - 2.1.fb47-1
 - New upstream version
 
