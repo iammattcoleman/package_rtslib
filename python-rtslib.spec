@@ -8,20 +8,20 @@ Name:           python-rtslib
 License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb53
-Release:        2%{?dist}
+Version:        2.1.fb57
+Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc python-setuptools systemd-units
-Requires:       python-kmod
+Requires:       python-kmod python-six
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 
 %if 0%{?with_python3}
-BuildRequires:  python3-devel python-tools python3-setuptools
+BuildRequires:  python3-devel python3-setuptools
 %endif
 
 %package doc
@@ -64,7 +64,6 @@ epydoc --no-sourcecode --html -n rtslib -o doc/html rtslib/*.py
 
 %if 0%{?with_python3}
 pushd %{py3dir}
-2to3 --write --nobackups .
 %{__python3} setup.py build
 popd
 %endif
@@ -107,13 +106,17 @@ popd
 %if 0%{?with_python3}
 %files -n python3-rtslib
 %{python3_sitelib}/*
-%doc COPYING README.md
+%doc COPYING README.md doc/getting_started.md
 %endif
 
 %files doc
 %doc doc/html
 
 %changelog
+* Tue Jun 23 2015 Andy Grover <agrover@redhat.com> - 2.1.fb57-1
+- New upstream version
+- Change from 2to3 to python-six
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.1.fb53-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
