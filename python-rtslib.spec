@@ -9,7 +9,7 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb57
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
@@ -24,19 +24,20 @@ Requires(postun): systemd
 BuildRequires:  python3-devel python3-setuptools
 %endif
 
+%description
+API for generic Linux SCSI kernel target. Includes the 'target'
+service and targetctl tool for restoring configuration.
+
+
 %package doc
 Summary:        Documentation for python-rtslib
 Group:          Documentation
 Requires:       %{name} = %{version}-%{release}
 
-
-%description
-API for generic Linux SCSI kernel target. Includes the 'target'
-service and targetctl tool for restoring configuration.
-
 %description doc
 API documentation for rtslib, to configure the generic Linux SCSI
 multiprotocol kernel target.
+
 
 %if 0%{?with_python3}
 %package -n python3-rtslib
@@ -46,6 +47,21 @@ Group:          System Environment/Libraries
 %description -n python3-rtslib
 API for generic Linux SCSI kernel target.
 %endif
+
+
+%package -n target-restore
+Summary:        Systemd service for targetcli/rtslib
+Group:          System Environment/Libraries
+%if 0%{?with_python3}
+Requires:       python3-rtslib = %{version}-%{release}
+%else
+Requires:       %{name} = %{version}-%{release}
+%endif
+
+%description -n target-restore
+Systemd service to restore the LIO kernel target settings
+on system restart.
+
 
 %prep
 %setup -q -n %{oname}-%{version}
@@ -69,39 +85,39 @@ popd
 %endif
 
 %install
+# remove py2 scripts if py3 enabled
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py install --skip-build --root %{buildroot}
+popd
+%{__python} setup.py install --skip-build --root %{buildroot} --install-scripts py2scripts
+rm -rf %{buildroot}/py2scripts
+%else
 %{__python} setup.py install --skip-build --root %{buildroot}
+%endif
+
 mkdir -p %{buildroot}%{_mandir}/man8/
 mkdir -p %{buildroot}%{_mandir}/man5/
 mkdir -p %{buildroot}%{_unitdir}
+mkdir -p %{buildroot}%{_sysconfdir}/target/backup
+mkdir -p %{buildroot}%{_localstatedir}/target/pr
+mkdir -p %{buildroot}%{_localstatedir}/target/alua
 install -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/target.service
 install -m 644 doc/targetctl.8.gz %{buildroot}%{_mandir}/man8/
 install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 
-%if 0%{?with_python3}
-pushd %{py3dir}
-# We don't want py3-converted scripts overwriting py2 scripts
-# Shunt them elsewhere then delete
-%{__python3} setup.py install --skip-build --root %{buildroot} --install-scripts py3scripts
-rm -rf %{buildroot}/py3scripts
-popd
-%endif
-
-%post
+%post -n target-restore
 %systemd_post target.service
 
-%preun
+%preun -n target-restore
 %systemd_preun target.service
 
-%postun
+%postun -n target-restore
 %systemd_postun_with_restart target.service
 
 %files
 %{python_sitelib}/*
-%{_bindir}/targetctl
-%{_unitdir}/target.service
 %doc COPYING README.md doc/getting_started.md
-%{_mandir}/man8/targetctl.8.gz
-%{_mandir}/man5/saveconfig.json.5.gz
 
 %if 0%{?with_python3}
 %files -n python3-rtslib
@@ -109,10 +125,23 @@ popd
 %doc COPYING README.md doc/getting_started.md
 %endif
 
+%files -n target-restore
+%{_bindir}/targetctl
+%{_unitdir}/target.service
+%dir %{_sysconfdir}/target
+%dir %{_sysconfdir}/target/backup
+%dir %{_localstatedir}/target/pr
+%dir %{_localstatedir}/target/alua
+%{_mandir}/man8/targetctl.8.gz
+%{_mandir}/man5/saveconfig.json.5.gz
+
 %files doc
 %doc doc/html
 
 %changelog
+* Tue Aug 18 2015 Andy Grover <agrover@redhat.com> - 2.1.fb57-2
+- Move targetctl and scripts to separate 'target-restore' pkg
+
 * Tue Jun 23 2015 Andy Grover <agrover@redhat.com> - 2.1.fb57-1
 - New upstream version
 - Change from 2to3 to python-six
