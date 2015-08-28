@@ -9,7 +9,7 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb57
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
@@ -130,6 +130,7 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %{_unitdir}/target.service
 %dir %{_sysconfdir}/target
 %dir %{_sysconfdir}/target/backup
+%dir %{_localstatedir}/target
 %dir %{_localstatedir}/target/pr
 %dir %{_localstatedir}/target/alua
 %{_mandir}/man8/targetctl.8.gz
@@ -139,6 +140,9 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Fri Aug 28 2015 Andy Grover <agrover@redhat.com> - 2.1.fb57-3
+- Fix an unowned directory
+
 * Tue Aug 18 2015 Andy Grover <agrover@redhat.com> - 2.1.fb57-2
 - Move targetctl and scripts to separate 'target-restore' pkg
 
