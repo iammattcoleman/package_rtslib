@@ -9,7 +9,7 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb57
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
@@ -43,6 +43,7 @@ multiprotocol kernel target.
 %package -n python3-rtslib
 Summary:        API for Linux kernel LIO SCSI target
 Group:          System Environment/Libraries
+Requires:       python3-kmod python3-six
 
 %description -n python3-rtslib
 API for generic Linux SCSI kernel target.
@@ -140,6 +141,9 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Mon Aug 31 2015 Andy Grover <agrover@redhat.com> - 2.1.fb57-4
+- Fix deps for python3 pkg
+
 * Fri Aug 28 2015 Andy Grover <agrover@redhat.com> - 2.1.fb57-3
 - Fix an unowned directory
 
