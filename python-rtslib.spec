@@ -9,10 +9,11 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb58
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
+Patch0:         0001-disable-xen_pvscsi.patch
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc python-setuptools systemd-units
 Requires:       python-kmod python-six
@@ -66,6 +67,7 @@ on system restart.
 
 %prep
 %setup -q -n %{oname}-%{version}
+%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -141,6 +143,9 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Tue Dec 8 2015 Andy Grover <agrover@redhat.com> - 2.1.fb58-2
+- Add patch 0001-disable-xen_pvscsi.patch
+
 * Tue Dec 1 2015 Andy Grover <agrover@redhat.com> - 2.1.fb58-1
 - New upstream version
 
