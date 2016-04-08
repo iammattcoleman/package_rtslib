@@ -8,15 +8,15 @@ Name:           python-rtslib
 License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb59
-Release:        2%{?dist}
+Version:        2.1.fb60
+Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
 Patch0:         0001-disable-xen_pvscsi.patch
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc python-setuptools systemd-units
-Requires:       python-kmod python-six
+Requires:       python-kmod python-six python2-pyudev
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
@@ -44,7 +44,7 @@ multiprotocol kernel target.
 %package -n python3-rtslib
 Summary:        API for Linux kernel LIO SCSI target
 Group:          System Environment/Libraries
-Requires:       python3-kmod python3-six
+Requires:       python3-kmod python3-six python3-pyudev
 
 %description -n python3-rtslib
 API for generic Linux SCSI kernel target.
@@ -143,6 +143,9 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Thu Apr 7 2016 Andy Grover <agrover@redhat.com> - 2.1.fb60-1
+- New upstream version
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.fb59-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
