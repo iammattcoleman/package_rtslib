@@ -8,8 +8,8 @@ Name:           python-rtslib
 License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
-Version:        2.1.fb60
-Release:        4%{?dist}
+Version:        2.1.fb63
+Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
@@ -143,6 +143,9 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Wed Mar 1 2017 Andy Grover <agrover@redhat.com> - 2.1.fb63-1
+- New upstream version
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.fb60-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 

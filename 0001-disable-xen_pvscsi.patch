@@ -1,4 +1,4 @@
-From 15332cb5ff8b5a3b3c0891f86bad68b3e6afa82c Mon Sep 17 00:00:00 2001
+From 0fc13cd7b18ec571092bac9082459c5acebf65f8 Mon Sep 17 00:00:00 2001
 From: Andy Grover <agrover@redhat.com>
 Date: Tue, 8 Dec 2015 09:46:26 -0800
 Subject: [PATCH] disable xen_pvscsi
@@ -8,18 +8,15 @@ Subject: [PATCH] disable xen_pvscsi
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/rtslib/fabric.py b/rtslib/fabric.py
-index b5cc4d9..ff79431 100644
+index 2887783..2eb6173 100644
 --- a/rtslib/fabric.py
 +++ b/rtslib/fabric.py
-@@ -453,7 +453,7 @@ fabric_modules = {
+@@ -469,7 +469,7 @@ fabric_modules = {
      "tcm_fc": FCoEFabricModule,
  #    "usb_gadget": USBGadgetFabricModule, # very rare, don't show
      "vhost": VhostFabricModule,
 -    "xen_pvscsi": XenPvScsiFabricModule,
 +#    "xen_pvscsi": XenPvScsiFabricModule, # no xen on Fedora
+     "ibmvscsis": IbmvscsisFabricModule,
      }
  
- #
--- 
-2.5.0
-
