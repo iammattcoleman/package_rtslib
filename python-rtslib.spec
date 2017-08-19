@@ -9,14 +9,13 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb63
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
 Patch0:         0001-disable-xen_pvscsi.patch
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc python-setuptools systemd-units
-Requires:       python-kmod python-six python2-pyudev
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
@@ -25,10 +24,19 @@ Requires(postun): systemd
 BuildRequires:  python3-devel python3-setuptools
 %endif
 
-%description
-API for generic Linux SCSI kernel target. Includes the 'target'
-service and targetctl tool for restoring configuration.
+%global _description\
+API for generic Linux SCSI kernel target. Includes the 'target'\
+service and targetctl tool for restoring configuration.\
 
+
+%description %_description
+
+%package -n python2-rtslib
+Summary: %summary
+Requires:       python-kmod python-six python2-pyudev
+%{?python_provide:%python_provide python2-rtslib}
+
+%description -n python2-rtslib %_description
 
 %package doc
 Summary:        Documentation for python-rtslib
@@ -118,7 +126,7 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %postun -n target-restore
 %systemd_postun_with_restart target.service
 
-%files
+%files -n python2-rtslib
 %{python_sitelib}/*
 %doc COPYING README.md doc/getting_started.md
 
@@ -143,6 +151,10 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Sat Aug 19 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2.1.fb63-3
+- Python 2 binary package renamed to python2-rtslib
+  See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
+
 * Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.fb63-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
