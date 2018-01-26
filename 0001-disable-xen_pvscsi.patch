@@ -15,8 +15,8 @@ index 2887783..2eb6173 100644
      "tcm_fc": FCoEFabricModule,
  #    "usb_gadget": USBGadgetFabricModule, # very rare, don't show
      "vhost": VhostFabricModule,
--    "xen_pvscsi": XenPvScsiFabricModule,
-+#    "xen_pvscsi": XenPvScsiFabricModule, # no xen on Fedora
+-    "xen-pvscsi": XenPvScsiFabricModule,
++#    "xen-pvscsi": XenPvScsiFabricModule, # no xen on Fedora
      "ibmvscsis": IbmvscsisFabricModule,
      }
  
