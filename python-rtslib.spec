@@ -9,13 +9,13 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        API for Linux kernel LIO SCSI target
 Version:        2.1.fb67
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:        target.service
 Patch0:         0001-disable-xen_pvscsi.patch
 BuildArch:      noarch
-BuildRequires:  python-devel epydoc python-setuptools systemd-units
+BuildRequires:  python2-devel epydoc python2-setuptools systemd-units
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
@@ -33,7 +33,7 @@ service and targetctl tool for restoring configuration.\
 
 %package -n python2-rtslib
 Summary: %summary
-Requires:       python-kmod python-six python2-pyudev
+Requires:       python2-kmod python2-six python2-pyudev
 %{?python_provide:%python_provide python2-rtslib}
 
 %description -n python2-rtslib %_description
@@ -41,7 +41,7 @@ Requires:       python-kmod python-six python2-pyudev
 %package doc
 Summary:        Documentation for python-rtslib
 Group:          Documentation
-Requires:       %{name} = %{version}-%{release}
+Requires:       python2-rtslib = %{version}-%{release}
 
 %description doc
 API documentation for rtslib, to configure the generic Linux SCSI
@@ -65,7 +65,7 @@ Group:          System Environment/Libraries
 %if 0%{?with_python3}
 Requires:       python3-rtslib = %{version}-%{release}
 %else
-Requires:       %{name} = %{version}-%{release}
+Requires:       python2-rtslib = %{version}-%{release}
 %endif
 
 %description -n target-restore
@@ -151,6 +151,10 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Thu Feb 15 2018 Iryna Shcherbina <ishcherb@redhat.com> - 2.1.fb67-2
+- Update Python 2 dependency declarations to new packaging standards
+  (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
+
 * Wed Feb 14 2018 Andy Grover <agrover@redhat.com> - 2.1.fb67-1
 - New upstream version
 
