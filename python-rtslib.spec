@@ -22,7 +22,7 @@ License:          ASL 2.0
 Group:            System Environment/Libraries
 Summary:          API for Linux kernel LIO SCSI target
 Version:          2.1.fb67
-Release:          3%{?dist}
+Release:          4%{?dist}
 URL:              https://fedorahosted.org/targetcli-fb/
 Source:           https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Source1:          target.service
@@ -188,6 +188,9 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %endif # with python2
 
 %changelog
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 2.1.fb67-4
+- Rebuilt for Python 3.7
+
 * Fri Mar 16 2018 Charalampos Stratakis <cstratak@redhat.com> - 2.1.fb67-3
 - Don't build the Python 2 subpackage on EL > 7
 
