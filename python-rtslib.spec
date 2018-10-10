@@ -21,10 +21,10 @@ Name:             python-rtslib
 License:          ASL 2.0
 Group:            System Environment/Libraries
 Summary:          API for Linux kernel LIO SCSI target
-Version:          2.1.fb67
-Release:          5%{?dist}
-URL:              https://fedorahosted.org/targetcli-fb/
-Source:           https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
+Version:          2.1.fb69
+Release:          1%{?dist}
+URL:              https://github.com/open-iscsi/%{oname}
+Source:           %{url}/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:          target.service
 Patch0:           0001-disable-xen_pvscsi.patch
 BuildArch:        noarch
@@ -188,6 +188,10 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %endif # with python2
 
 %changelog
+* Wed Oct 10 2018 Andy Grover <agrover@redhat.com> - 2.1.fb69-1
+- New upstream version
+- Fix URL so spectool -g works
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.fb67-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
