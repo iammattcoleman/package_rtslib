@@ -1,20 +1,3 @@
-%if 0%{?fedora} || 0%{?rhel} > 7
-# Enable python3 build by default
-%bcond_without python3
-%else
-%bcond_with python3
-%endif
-
-%if 0%{?rhel} > 7
-# Disable python2 build by default
-# disable also docs build as they require python2
-%bcond_with python2
-%bcond_with docs
-%else
-%bcond_without python2
-%bcond_without docs
-%endif
-
 %global oname rtslib-fb
 
 Name:             python-rtslib
@@ -22,13 +5,14 @@ License:          ASL 2.0
 Group:            System Environment/Libraries
 Summary:          API for Linux kernel LIO SCSI target
 Version:          2.1.fb69
-Release:          1%{?dist}
+Release:          2%{?dist}
 URL:              https://github.com/open-iscsi/%{oname}
 Source:           %{url}/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:          target.service
 Patch0:           0001-disable-xen_pvscsi.patch
 BuildArch:        noarch
-BuildRequires:    epydoc systemd-units
+BuildRequires:    epydoc
+BuildRequires:    systemd
 Requires(post):   systemd
 Requires(preun):  systemd
 Requires(postun): systemd
@@ -36,43 +20,28 @@ Requires(postun): systemd
 
 %global _description\
 API for generic Linux SCSI kernel target. Includes the 'target'\
-service and targetctl tool for restoring configuration.\
-
+service and targetctl tool for restoring configuration.
 
 %description %_description
 
-%if %{with python2}
-%package -n python2-rtslib
-Summary: %summary
 
-BuildRequires: python2-devel
-BuildRequires: python2-setuptools
-
-Requires:       python2-kmod
-Requires:       python2-six
-Requires:       python2-pyudev
-%{?python_provide:%python_provide python2-rtslib}
-
-%description -n python2-rtslib %_description
-%endif # with python2
-
-%if %{with docs}
 %package doc
 Summary:        Documentation for python-rtslib
-Requires:       python2-rtslib = %{version}-%{release}
+Requires:       python3-rtslib = %{version}-%{release}
 
 %description doc
 API documentation for rtslib, to configure the generic Linux SCSI
 multiprotocol kernel target.
-%endif # with docs
 
 
-%if %{with python3}
 %package -n python3-rtslib
 Summary:        API for Linux kernel LIO SCSI target
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+BuildRequires:  python3-kmod
+BuildRequires:  python3-six
+BuildRequires:  python3-pyudev
 
 Requires:       python3-kmod
 Requires:       python3-six
@@ -80,16 +49,11 @@ Requires:       python3-pyudev
 
 %description -n python3-rtslib
 API for generic Linux SCSI kernel target.
-%endif # with python3
 
 
 %package -n target-restore
 Summary:        Systemd service for targetcli/rtslib
-%if %{with python3}
 Requires:       python3-rtslib = %{version}-%{release}
-%else
-Requires:       python2-rtslib = %{version}-%{release}
-%endif # with python3
 
 %description -n target-restore
 Systemd service to restore the LIO kernel target settings
@@ -100,43 +64,19 @@ on system restart.
 %setup -q -n %{oname}-%{version}
 %patch0 -p1
 
-%if %{with python3}
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-%endif # with python3
 
 %build
-%if %{with python2}
-%py2_build
-
-mkdir -p doc/html
-epydoc --no-sourcecode --html -n rtslib -o doc/html rtslib/*.py
-%endif # with python2
-
 gzip --stdout doc/targetctl.8 > doc/targetctl.8.gz
 gzip --stdout doc/saveconfig.json.5 > doc/saveconfig.json.5.gz
 
-%if 0%{?with_python3}
-pushd %{py3dir}
 %py3_build
-popd
-%endif # with python3
+
+mkdir -p doc/html
+epydoc --no-sourcecode --html -n rtslib -o doc/html rtslib/*.py
 
 %install
 # remove py2 scripts if py3 enabled
-%if %{with python3}
-pushd %{py3dir}
 %py3_install
-popd
-%if %{with python2}
-%{__python2} setup.py install --skip-build --root %{buildroot} --install-scripts py2scripts
-rm -rf %{buildroot}/py2scripts
-%endif # with python2
-%else
-%if %{with python2}
-%py2_install
-%endif # with python2
-%endif # with python3
 
 mkdir -p %{buildroot}%{_mandir}/man8/
 mkdir -p %{buildroot}%{_mandir}/man5/
@@ -157,19 +97,11 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %postun -n target-restore
 %systemd_postun_with_restart target.service
 
-%if %{with python2}
-%files -n python2-rtslib
-%license COPYING
-%{python2_sitelib}/*
-%doc README.md doc/getting_started.md
-%endif # with python2
 
-%if %{with python3}
 %files -n python3-rtslib
 %license COPYING
 %{python3_sitelib}/*
 %doc README.md doc/getting_started.md
-%endif # with python3
 
 %files -n target-restore
 %{_bindir}/targetctl
@@ -182,12 +114,14 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %{_mandir}/man8/targetctl.8.gz
 %{_mandir}/man5/saveconfig.json.5.gz
 
-%if %{with python2}
 %files doc
 %doc doc/html
-%endif # with python2
 
 %changelog
+* Fri Oct 12 2018 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2.1.fb69-2
+- Python2 binary package has been removed
+  See https://fedoraproject.org/wiki/Changes/Mass_Python_2_Package_Removal
+
 * Wed Oct 10 2018 Andy Grover <agrover@redhat.com> - 2.1.fb69-1
 - New upstream version
 - Fix URL so spectool -g works
