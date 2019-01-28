@@ -2,7 +2,6 @@
 
 Name:             python-rtslib
 License:          ASL 2.0
-Group:            System Environment/Libraries
 Summary:          API for Linux kernel LIO SCSI target
 Version:          2.1.fb69
 Release:          2%{?dist}
