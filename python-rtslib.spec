@@ -4,7 +4,7 @@ Name:             python-rtslib
 License:          ASL 2.0
 Summary:          API for Linux kernel LIO SCSI target
 Version:          2.1.fb69
-Release:          4%{?dist}
+Release:          5%{?dist}
 URL:              https://github.com/open-iscsi/%{oname}
 Source:           %{url}/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:          target.service
@@ -117,6 +117,9 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %doc doc/html
 
 %changelog
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2.1.fb69-5
+- Rebuilt for Python 3.8
+
 * Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.1.fb69-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
