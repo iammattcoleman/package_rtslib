@@ -4,7 +4,7 @@ Name:             python-rtslib
 License:          ASL 2.0
 Summary:          API for Linux kernel LIO SCSI target
 Version:          2.1.fb69
-Release:          6%{?dist}
+Release:          7%{?dist}
 URL:              https://github.com/open-iscsi/%{oname}
 Source:           %{url}/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:          target.service
@@ -12,9 +12,6 @@ Patch0:           0001-disable-xen_pvscsi.patch
 BuildArch:        noarch
 BuildRequires:    epydoc
 BuildRequires:    systemd
-Requires(post):   systemd
-Requires(preun):  systemd
-Requires(postun): systemd
 
 
 %global _description\
@@ -51,8 +48,11 @@ API for generic Linux SCSI kernel target.
 
 
 %package -n target-restore
-Summary:        Systemd service for targetcli/rtslib
-Requires:       python3-rtslib = %{version}-%{release}
+Summary:          Systemd service for targetcli/rtslib
+Requires:         python3-rtslib = %{version}-%{release}
+Requires(post):   systemd
+Requires(preun):  systemd
+Requires(postun): systemd
 
 %description -n target-restore
 Systemd service to restore the LIO kernel target settings
@@ -65,9 +65,6 @@ on system restart.
 
 
 %build
-gzip --stdout doc/targetctl.8 > doc/targetctl.8.gz
-gzip --stdout doc/saveconfig.json.5 > doc/saveconfig.json.5.gz
-
 %py3_build
 
 mkdir -p doc/html
@@ -84,8 +81,8 @@ mkdir -p %{buildroot}%{_sysconfdir}/target/backup
 mkdir -p %{buildroot}%{_localstatedir}/target/pr
 mkdir -p %{buildroot}%{_localstatedir}/target/alua
 install -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/target.service
-install -m 644 doc/targetctl.8.gz %{buildroot}%{_mandir}/man8/
-install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
+install -m 644 doc/targetctl.8 %{buildroot}%{_mandir}/man8/
+install -m 644 doc/saveconfig.json.5 %{buildroot}%{_mandir}/man5/
 
 %post -n target-restore
 %systemd_post target.service
@@ -99,7 +96,7 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 
 %files -n python3-rtslib
 %license COPYING
-%{python3_sitelib}/*
+%{python3_sitelib}/rtslib*
 %doc README.md doc/getting_started.md
 
 %files -n target-restore
@@ -110,13 +107,18 @@ install -m 644 doc/saveconfig.json.5.gz %{buildroot}%{_mandir}/man5/
 %dir %{_localstatedir}/target
 %dir %{_localstatedir}/target/pr
 %dir %{_localstatedir}/target/alua
-%{_mandir}/man8/targetctl.8.gz
-%{_mandir}/man5/saveconfig.json.5.gz
+%{_mandir}/man8/targetctl.8*
+%{_mandir}/man5/saveconfig.json.5*
 
 %files doc
 %doc doc/html
 
 %changelog
+* Fri Nov 01 2019 Neal Gompa <ngompa13@gmail.com> - 2.1.fb69-7
+- Fix file list for python3-rtslib subpackage
+- Don't compress manpages in build phase, as rpm auto-compresses manpages
+- Move systemd requires to the target-restore subpackage
+
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 2.1.fb69-6
 - Rebuilt for Python 3.8.0rc1 (#1748018)
 
