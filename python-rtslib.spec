@@ -1,5 +1,8 @@
 %global oname rtslib-fb
 
+# epydoc is gone, so disable for now
+%bcond_with apidocs
+
 Name:             python-rtslib
 License:          ASL 2.0
 Summary:          API for Linux kernel LIO SCSI target
@@ -10,7 +13,9 @@ Source:           %{url}/archive/v%{version}/%{oname}-%{version}.tar.gz
 Source1:          target.service
 Patch0:           0001-disable-xen_pvscsi.patch
 BuildArch:        noarch
+%if %{with apidocs}
 BuildRequires:    epydoc
+%endif
 BuildRequires:    systemd
 
 
@@ -21,6 +26,7 @@ service and targetctl tool for restoring configuration.
 %description %_description
 
 
+%if %{with apidocs}
 %package doc
 Summary:        Documentation for python-rtslib
 Requires:       python3-rtslib = %{version}-%{release}
@@ -28,7 +34,7 @@ Requires:       python3-rtslib = %{version}-%{release}
 %description doc
 API documentation for rtslib, to configure the generic Linux SCSI
 multiprotocol kernel target.
-
+%endif
 
 %package -n python3-rtslib
 Summary:        API for Linux kernel LIO SCSI target
@@ -42,6 +48,9 @@ BuildRequires:  python3-pyudev
 Requires:       python3-kmod
 Requires:       python3-six
 Requires:       python3-pyudev
+%if ! %{with apidocs}
+Obsoletes:      %{name}-doc < %{version}-%{release}
+%endif
 
 %description -n python3-rtslib
 API for generic Linux SCSI kernel target.
@@ -67,8 +76,10 @@ on system restart.
 %build
 %py3_build
 
+%if %{with apidocs}
 mkdir -p doc/html
 epydoc --no-sourcecode --html -n rtslib -o doc/html rtslib/*.py
+%endif
 
 %install
 # remove py2 scripts if py3 enabled
@@ -110,14 +121,17 @@ install -m 644 doc/saveconfig.json.5 %{buildroot}%{_mandir}/man5/
 %{_mandir}/man8/targetctl.8*
 %{_mandir}/man5/saveconfig.json.5*
 
+%if %{with apidocs}
 %files doc
 %doc doc/html
+%endif
 
 %changelog
 * Fri Nov 01 2019 Neal Gompa <ngompa13@gmail.com> - 2.1.fb69-7
 - Fix file list for python3-rtslib subpackage
 - Don't compress manpages in build phase, as rpm auto-compresses manpages
 - Move systemd requires to the target-restore subpackage
+- Disable building apidocs as epydoc is gone
 
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 2.1.fb69-6
 - Rebuilt for Python 3.8.0rc1 (#1748018)
