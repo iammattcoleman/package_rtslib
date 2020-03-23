@@ -1,0 +1,27 @@
+---
+# Tests suitable to run in classic environment
+- hosts: localhost
+  roles:
+  - role: standard-test-basic
+    # python-stqe cannot be installed on 'atomic', no need to run on 'container'
+    tags:
+    - classic
+    repositories:
+    - repo: "https://gitlab.com/rh-kernel-stqe/python-stqe.git"
+      dest: "python-stqe"
+      version: stable
+    tests:
+    # Install python-stqe first
+    # make sure we use same version of libsan
+    - install_stqe:
+        dir: python-stqe
+        run: pip3 install libsan==0.3.0 && python3 setup.py install --prefix=
+    - iscsi-initiator-utils:
+        dir: ./
+        run: stqe-test run --fmf -f tags:targetcli_basic
+    required_packages:
+    # required for python-stqe
+    - python3-pyyaml
+    - python3-netifaces
+    - python3-augeas	
+    - python3-pip
