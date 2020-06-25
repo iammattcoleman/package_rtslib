@@ -6,8 +6,8 @@
 Name:             python-rtslib
 License:          ASL 2.0
 Summary:          API for Linux kernel LIO SCSI target
-Version:          2.1.fb69
-Release:          9%{?dist}
+Version:          2.1.73
+Release:          1%{?dist}
 URL:              https://github.com/open-iscsi/%{oname}
 Source:           %{url}/archive/v%{version}/%{oname}-%{version}.tar.gz
 Patch0:           0001-disable-xen_pvscsi.patch
@@ -126,6 +126,10 @@ install -m 644 doc/saveconfig.json.5 %{buildroot}%{_mandir}/man5/
 %endif
 
 %changelog
+* Thu Jun 25 2020 Matt Coleman <matt@datto.com> - 2.1.73-1
+- New upstream version
+- Use upstream's systemd service
+
 * Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 2.1.fb69-9
 - Rebuilt for Python 3.9
 
