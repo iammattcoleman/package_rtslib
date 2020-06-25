@@ -10,7 +10,6 @@ Version:          2.1.fb69
 Release:          9%{?dist}
 URL:              https://github.com/open-iscsi/%{oname}
 Source:           %{url}/archive/v%{version}/%{oname}-%{version}.tar.gz
-Source1:          target.service
 Patch0:           0001-disable-xen_pvscsi.patch
 BuildArch:        noarch
 %if %{with apidocs}
@@ -91,7 +90,7 @@ mkdir -p %{buildroot}%{_unitdir}
 mkdir -p %{buildroot}%{_sysconfdir}/target/backup
 mkdir -p %{buildroot}%{_localstatedir}/target/pr
 mkdir -p %{buildroot}%{_localstatedir}/target/alua
-install -m 644 %{SOURCE1} %{buildroot}%{_unitdir}/target.service
+install -m 644 systemd/target.service %{buildroot}%{_unitdir}/target.service
 install -m 644 doc/targetctl.8 %{buildroot}%{_mandir}/man8/
 install -m 644 doc/saveconfig.json.5 %{buildroot}%{_mandir}/man5/
 
